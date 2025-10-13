@@ -100,7 +100,7 @@ Run inference:
 
 ```
 python main.py infer \
-  --checkpoint picking_matrix/models/trained_models_transf_255_QUESTO/exp_0/best_picking_model.pth \
+  --checkpoint models/trained_models/best_picking_model_v2.pth \
   --batch-size 4 \
   --test-data  data/das-picking/labeled-data/test \
   --targets    data/das-picking/labeled-data/targets_masks \
