@@ -7,7 +7,6 @@ labeled data.
 
 
 ## Getting started
-### Requirements
 
 Download the code:
 ```
