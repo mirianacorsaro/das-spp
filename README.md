@@ -47,7 +47,7 @@ With:
 - Event filename pattern (train/val/test): ```<id>_<magnitude>_<YYYY-mm-dd>_<HH-MM-SS.micro>.npy```.
 - Target masks: ```targets_masks/<id>.npy```   
 
-Install:
+Please follow the instructions here to install PyTorch (the only required dependency for loading the model). Installing PyTorch with CUDA support is strongly recommended. To setup all the required dependencies for training and evaluation, please follow the instructions below:
 
 ```
 python -m venv .venv
