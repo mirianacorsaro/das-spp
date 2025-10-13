@@ -1,0 +1,25 @@
+name: das-spp-env
+channels:
+  - pytorch
+  - nvidia
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.10
+  - numpy=1.23.*
+  - matplotlib
+  - pillow
+  - h5py
+  - ipykernel
+  - htop
+  - pytorch
+  - torchvision=0.13
+  - torchaudio=0.12
+  - pytorch-cuda=12.4
+  - pip
+  - pip:
+      - alive-progress==3.1.5
+      - einops
+      - wandb
+      - timm
+      - tqdm
