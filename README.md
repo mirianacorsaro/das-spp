@@ -8,6 +8,7 @@ PyTorch implementation of DAS-SPP for P/S phase picking on DAS (Distributed Acou
 ## Getting started
 
 Download the code:
+
 ```
 git clone https://github.com/mirianacorsaro/das-spp
 cd das-spp
@@ -47,15 +48,11 @@ With:
 - Event filename pattern (train/val/test): ```<id>_<magnitude>_<YYYY-mm-dd>_<HH-MM-SS.micro>.npy```.
 - Target masks: ```targets_masks/<id>.npy```   
 
-Please follow the instructions here to install PyTorch (the only required dependency for loading the model). Installing PyTorch with CUDA support is strongly recommended. To setup all the required dependencies for training and evaluation, please follow the instructions below:
+Please follow the instructions here to setup all the required dependencies for training and evaluation:
 
 ```
-python -m venv .venv
-# Linux/macOS
-source .venv/bin/activate
-# Windows
-# .venv\Scripts\activate
-pip install -r requirements.txt
+conda env create -f environment.yml
+conda activate das-ssp-env
 ```
 
 ## Training
