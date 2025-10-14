@@ -14,7 +14,7 @@ git clone https://github.com/mirianacorsaro/das-spp
 cd das-spp
 ```
 
-Download the **pretrained DAS-SPP** & a subset of our datasets from [here](https://drive.google.com/drive/folders/1UkeosTOsF130dHzRfRU3FLvXnnzQXorB?usp=drive_link).
+Download the **pretrained DAS-SPP** & a subset of our datasets from [here](https://drive.google.com/drive/folders/1UkeosTOsF130dHzRfRU3FLvXnnzQXorB?usp=sharing).
 
 After download, place files as shown in the tree.
 
@@ -98,9 +98,8 @@ Run inference:
 python main.py infer \
   --checkpoint models/trained_models/best_picking_model_v2.pth \
   --batch-size 4 \
-  --test-data  data/das-picking/labeled-data/test \
-  --targets    data/das-picking/labeled-data/targets_masks \
-  --das-test-dir data/das-picking/labeled-data/test \
+  --test-data  data/campi_flegrei/labeled-data/data/test \
+  --targets    data/campi_flegrei/labeled-data/masks \
   --epoch 100 --exp-id 0 --gpu 0 \
   --num-plot-images 16 --plot-original-das --dpi 150
 ```
