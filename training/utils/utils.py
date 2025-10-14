@@ -1,4 +1,5 @@
 import numpy as np
+import torch
 
 def get_first_consecutive_positions(mask: np.ndarray, value: int):
     """
@@ -12,12 +13,22 @@ def get_first_consecutive_positions(mask: np.ndarray, value: int):
         list: x-coordinates (channels)
         list: y-coordinates (time indices)
     """
-    mask = np.array(mask) 
-    shifted_mask = np.roll(mask, shift=1, axis=1) 
-    shifted_mask[:, 0] = 0 
-    condition = (mask == value) & (shifted_mask != value)  
-    x_positions, y_positions = np.where(condition) 
-    return x_positions.tolist(), y_positions.tolist()
+    if mask.ndim == 3 and mask.shape[0] == 1:
+        mask = mask[0]
+    if mask.ndim != 2:
+        raise ValueError(f"Expected [H,W] or [1,H,W], got {tuple(mask.shape)}")
+
+    if mask.dtype is not torch.bool:
+        mask = (mask == value)
+
+    mask = mask.to("cpu", non_blocking=True)
+
+    prev = torch.zeros_like(mask, dtype=torch.bool)
+    prev[:, 1:] = mask[:, :-1]
+
+    starts = mask & (~prev)
+    x, y = torch.nonzero(starts, as_tuple=True)
+    return x.tolist(), y.tolist()
 
 def calculate_accuracy(inputs, outputs):
     inputs = inputs.flatten(1)

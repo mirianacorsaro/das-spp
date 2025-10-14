@@ -1,11 +1,5 @@
-import os
 import torch
 import numpy as np
-import os
-import torch
-import matplotlib.pyplot as plt
-import matplotlib.gridspec as gridspec
-import torchvision.transforms as transforms
 from .utils.utils import get_first_consecutive_positions
 
 def inference(model, signal, prob_threshold=0.9):
