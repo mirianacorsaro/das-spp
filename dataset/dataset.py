@@ -71,11 +71,12 @@ def load_and_preprocess_data(
             if id_guess is None:
                 id_guess = abs(hash(fname)) % (10**9)
 
-            target_path = targets_dir / f"{id_guess}.npy"
+            target_path = targets_dir / f"0{id_guess}.npy"
+    
             if target_path.exists():
-                tgt = np.load(target_path).astype(TARGET_DTYPE, copy=False)
+                tgt = np.load(target_path)
             else:
-                tgt = np.zeros((scale_h, scale_w), dtype=TARGET_DTYPE)
+                tgt = np.zeros((scale_h, scale_w))
 
             images.append(arr)
             targets.append(tgt)
