@@ -1,6 +1,9 @@
+""" Parts of the U-Net model """
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+
 
 class DoubleConv(nn.Module):
     """(convolution => [BN] => ReLU) * 2"""
@@ -73,28 +76,9 @@ class OutConv(nn.Module):
     def forward(self, x):
         return self.conv(x)
 
-class TransformerBlock(nn.Module):
-    def __init__(self, embed_size, heads, forward_expansion):
-        super(TransformerBlock, self).__init__()
-        self.attention = nn.MultiheadAttention(embed_dim=embed_size, num_heads=heads)
-        self.norm1 = nn.LayerNorm(embed_size)
-        self.norm2 = nn.LayerNorm(embed_size)
-        self.feed_forward = nn.Sequential(
-            nn.Linear(embed_size, forward_expansion * embed_size),
-            nn.ReLU(),
-            nn.Linear(forward_expansion * embed_size, embed_size)
-        )
-
-    def forward(self, x):
-        attention = self.attention(x, x, x)[0]  # Self-attention
-        x = self.norm1(attention + x)
-        forward = self.feed_forward(x)
-        out = self.norm2(forward + x)
-        return out
-    
-class TUNet(nn.Module):
-    def __init__(self, n_channels = 1, n_classes = 3, heads = 4, forward_expansion = 2, bilinear=False):
-        super(TUNet, self).__init__()
+class UNet(nn.Module):
+    def __init__(self, n_channels = 1, n_classes = 3, bilinear=False):
+        super(UNet, self).__init__()
         self.n_channels = n_channels
         self.n_classes = n_classes
         self.bilinear = bilinear
@@ -110,8 +94,6 @@ class TUNet(nn.Module):
         self.up3 = (Up(256, 128 // factor, bilinear))
         self.up4 = (Up(128, 64, bilinear))
         self.outc = (OutConv(64, n_classes))
-        
-        self.transformer = TransformerBlock(embed_size = 1024 // factor, heads = heads, forward_expansion = forward_expansion)
 
     def forward(self, x):
         x1 = self.inc(x)
@@ -119,24 +101,11 @@ class TUNet(nn.Module):
         x3 = self.down2(x2)
         x4 = self.down3(x3)
         x5 = self.down4(x4)
-        
-        b, c, h, w = x5.size()
-        x5 = x5.view(b, c, -1).permute(0, 2, 1)
-        transformer_out = self.transformer(x5)
-        transformer_out = transformer_out.permute(0, 2, 1).view(b, c, h, w)
-        
-        x = self.up1(transformer_out, x4)
+        x = self.up1(x5, x4)
         x = self.up2(x, x3)
         x = self.up3(x, x2)
         x = self.up4(x, x1)
-        
         logits = self.outc(x)
-        
         return logits
-
-def load_model(model_path = 'models/trained_models/best_picking_model_v2.pth', device = torch.device('cpu')):
-    model = torch.load(model_path, map_location=device)
-    model.eval()
-    return model
 
   
