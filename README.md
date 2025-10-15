@@ -1,4 +1,4 @@
-# DAS-SPP: Transformer-Based Seismic Phase Picking on Distributed Acoustic Sensing data
+# DAS - Seismic Phase Picking
 
 PyTorch implementation of DAS-SPP for P/S phase picking on DAS (Distributed Acoustic Sensing) data. DAS-SPP captures both local spatial patterns and long-range dependencies within the data, demonstrating reliable performance on seismic phase picking and event detection with minimal labeled data. 
 
