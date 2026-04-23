@@ -98,6 +98,7 @@ class TUNet(nn.Module):
         self.n_channels = n_channels
         self.n_classes = n_classes
         self.bilinear = bilinear
+        self.pos_embedding = None
 
         self.inc = (DoubleConv(n_channels, 64))
         self.down1 = (Down(64, 128))
@@ -122,9 +123,18 @@ class TUNet(nn.Module):
         
         b, c, h, w = x5.size()
         x5 = x5.view(b, c, -1).permute(0, 2, 1)
+       
+        if self.pos_embedding is None or self.pos_embedding.size(1) != x5.size(1):
+            self.pos_embedding = nn.Parameter(
+                torch.randn(1, x5.size(1), c, device=x5.device)
+            )
+
+        x5 = x5 + self.pos_embedding
+
         transformer_out = self.transformer(x5)
+     
         transformer_out = transformer_out.permute(0, 2, 1).view(b, c, h, w)
-        
+    
         x = self.up1(transformer_out, x4)
         x = self.up2(x, x3)
         x = self.up3(x, x2)
@@ -133,10 +143,5 @@ class TUNet(nn.Module):
         logits = self.outc(x)
         
         return logits
-
-def load_model(model_path = 'models/trained_models/best_picking_model_v2.pth', device = torch.device('cpu')):
-    model = torch.load(model_path, map_location=device)
-    model.eval()
-    return model
 
   
