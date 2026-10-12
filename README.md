@@ -14,7 +14,7 @@ git clone https://github.com/mirianacorsaro/das-spp
 cd das-spp
 ```
 
-Download the **pretrained DAS-SPP** & a subset of our datasets from [here](https://drive.google.com/drive/folders/1UkeosTOsF130dHzRfRU3FLvXnnzQXorB?usp=sharing).
+Download the **pretrained DAS-SPP** & a subset of our datasets from [Hugging Face](https://huggingface.co/mirianacorsaro).
 
 After download, place files as shown in the tree.
 
